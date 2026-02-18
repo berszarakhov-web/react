@@ -1,0 +1,203 @@
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  height: 85vh;
+  min-height: 560px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  /* Градиент слева-направо + снизу-вверх — затемняем края */
+  background: linear-gradient(to right, var(--bg) 35%, rgba(8,10,15,0.3) 70%, rgba(8,10,15,0) 100%),
+              linear-gradient(to top, var(--bg) 0%, transparent 40%),
+              /* Реальное изображение из атрибута style */
+              var(--bg) center/cover no-repeat;
+  /* ⚠️ Этот трюк перезаписывает background, поэтому в JSX
+     мы задаём backgroundImage через style, а gradient-и выше
+     нужно вынести в ::before (см. ниже) */
+}
+
+/* Правильный способ: фон через ::after, градиент через само .heroBg */
+/* Пересмотренная реализация: JSX устанавливает backgroundImage напрямую */
+.heroBg {
+  position: absolute;
+  inset: 0;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.heroBg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, var(--bg) 30%, rgba(8,10,15,0.2) 65%, transparent 100%),
+    linear-gradient(to top, var(--bg) 0%, transparent 45%);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  padding: 0 80px 80px;
+  max-width: 580px;
+}
+
+.heroTag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+  font-family: 'DM Mono', monospace;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.heroTag::before {
+  content: '';
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.heroTitle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px;
+  line-height: 0.9;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 40px rgba(0,0,0,0.4);
+}
+
+.heroMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  color: var(--text2);
+  flex-wrap: wrap;
+}
+
+.rating {
+  color: var(--accent);
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+}
+
+.sep { color: var(--muted); }
+
+.heroDesc {
+  color: var(--text2);
+  font-size: 15px;
+  line-height: 1.65;
+  margin-bottom: 32px;
+  max-width: 420px;
+}
+
+.heroBtns {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btnPlay {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btnPlay:hover {
+  background: #f0ab28;
+  transform: translateY(-2px);
+}
+
+/* Обёртка для BookmarkButton в Hero — убираем absolute позиционирование */
+.bookmarkWrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+
+.bookmarkWrap button {
+  position: static !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ===== СЕКЦИИ ===== */
+.section {
+  padding: 56px 48px 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 2px;
+}
+
+.seeAll {
+  font-size: 13px;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  transition: opacity 0.2s;
+}
+
+.seeAll:hover { opacity: 0.7; }
+
+/* Горизонтальный скролл */
+.row {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: none; /* Firefox — скрываем полосу */
+}
+
+.row::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+.row > * {
+  flex: 0 0 180px; /* карточки фиксированной ширины */
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 768px) {
+  .heroContent { padding: 0 20px 60px; }
+  .heroTitle { font-size: 52px; }
+  .section { padding: 40px 20px 0; }
+}
